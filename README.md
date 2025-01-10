@@ -25,6 +25,7 @@ Testing Terraform code with Checkov
 9. GitOps
 We will use ArgoCD for the deployment
 
+
 ## Prerequisites
 A few tools are require to create this environment. Refer to [prequireites.md] files for the tools and instructions on how to install the if you dont already have them installed.
 
