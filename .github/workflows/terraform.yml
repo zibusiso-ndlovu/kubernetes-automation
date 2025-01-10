@@ -110,7 +110,7 @@ jobs:
       run: terraform validate -no-color
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      id: plan
+      id: tfplan
       #working-directory: ${{ inputs.terraform_directory }}
       shell: bash
       run: |
@@ -118,8 +118,12 @@ jobs:
         terraform plan -no-color -out=tfplan >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
     - name: Terraform Plan
-      id: tf-plan
+      id: plan
       run: terraform plan -input=false
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
+
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Publish Terraform Plan
@@ -128,19 +132,9 @@ jobs:
         name: tfplan
         path: tfplan  
      # On push to "main", build or change infrastructure according to Terraform configuration files
-    - name: Download Plan
-      id: download-plan
-      uses: dawidd6/action-download-artifact@v2
-      with:
-      # github_token: ${{ inputs.github_token }}
-      # workflow: plan.yml
-      # pr: ${{ inputs.pr_id }}
-       name: tfplan
-       path: tfplan
 
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main'
-      run: |
-       terraform apply -auto-approve -input=false \
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
 
     
