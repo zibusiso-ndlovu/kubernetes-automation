@@ -127,20 +127,6 @@ jobs:
       with:
         name: tfplan
         path: tfplan  
-    - name: Comment Plan
-      id: comment-plan
-      uses: peter-evans/create-or-update-comment@v2
-      with:
-          token: ${{ inputs.github_token }}
-          issue-number: ${{ inputs.pr_id }}
-          body: |
-            Terraform Plan:
-  
-            ```
-            ${{ steps.tf-plan.outputs.plan }}
-            ```
-  
-            Plan saved to GH artifacts.
      # On push to "main", build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
