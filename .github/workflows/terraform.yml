@@ -110,6 +110,14 @@ jobs:
       run: terraform validate -no-color
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      id: plan
+      #working-directory: ${{ inputs.terraform_directory }}
+      shell: bash
+      run: |
+        echo 'plan<<EOF' >> $GITHUB_OUTPUT
+        terraform plan -no-color -out=tfplan >> $GITHUB_OUTPUT
+        echo 'EOF' >> $GITHUB_OUTPUT
+    - name: Terraform Plan
       id: tf-plan
       run: terraform plan -input=false
       # On push to "main", build or change infrastructure according to Terraform configuration files
