@@ -82,6 +82,8 @@ jobs:
       uses: terraform-linters/setup-tflint@v4
       with:
         tflint_version: v0.52.0
+    - name: 'Show version'
+      run: tflint --version
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
