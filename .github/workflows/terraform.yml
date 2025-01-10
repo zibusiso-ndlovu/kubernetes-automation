@@ -115,7 +115,7 @@ jobs:
       shell: bash
       run: |
         echo 'plan<<EOF' >> $GITHUB_OUTPUT
-        terraform plan -no-color -out=tfplan >> $GITHUB_OUTPUT
+        terraform -refresh-only -no-color -out=tfplan >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
     - name: Terraform Plan
       id: plan
