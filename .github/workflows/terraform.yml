@@ -122,40 +122,27 @@ jobs:
       run: terraform plan -input=false
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Post Terraform Plan output
-      uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
-      env:
-        PLAN: "${{ steps.tf-plan.outputs.stdout }}"
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.tf-plan.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.tf-ini.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.tf-plan.outcome }}\`
-          #### Terraform Validation 🤖\`${{ steps.tf-validate.outcome }}\`
-
-          <details><summary>Show Plan</summary>
-
-          \`\`\`\n
-          ${process.env.PLAN}
-          \`\`\`
-
-          </details>
-
-          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
-      # - name: Terraform Apply
-   #   if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-   #   run: terraform apply -auto-approve -input=false
     - name: Publish Terraform Plan
       uses: actions/upload-artifact@v3
       with:
         name: tfplan
-        path: tfplan
+        path: tfplan  
+    - name: Comment Plan
+      id: comment-plan
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+          token: ${{ inputs.github_token }}
+          issue-number: ${{ inputs.pr_id }}
+          body: |
+            Terraform Plan:
+  
+            ```
+            ${{ steps.tf-plan.outputs.plan }}
+            ```
+  
+            Plan saved to GH artifacts.
+     # On push to "main", build or change infrastructure according to Terraform configuration files
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: |
+       terraform apply -auto-approve -input=false \
