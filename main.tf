@@ -1,5 +1,10 @@
 #### S3
 
+
+
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+
+
 resource "aws_s3_bucket" "s3_bucket_backend" {
   #checkov:skip=CKV_AWS_145: Lifecycle configuration not required for TF state bucket
   #checkov:skip=CKV2_AWS_61: Lifecycle configuration not required for TF state bucket
@@ -20,7 +25,7 @@ resource "aws_s3_bucket_acl" "s3_bucket_backend_acl" {
 resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
   bucket = aws_s3_bucket.s3_bucket_backend.id
   rule {
-    object_ownership = "BucketOwnerEnforced"
+    object_ownership = "ObjectWriter"
   }
 }
 
