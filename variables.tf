@@ -4,4 +4,10 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "s3_bucket_name" {
+  description = "S3 Bucket name"
+  type        = string
+  default     = "wayisusa_uzoyimela"
+}
+
 
