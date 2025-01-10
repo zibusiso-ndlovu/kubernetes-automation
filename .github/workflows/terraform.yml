@@ -117,20 +117,30 @@ jobs:
         echo 'plan<<EOF' >> $GITHUB_OUTPUT
         terraform plan -no-color -out=tfplan >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
-    # See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Plan
+      id: tf-plan
+      run: terraform plan -input=false
+      # On push to "main", build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Publish Terraform Plan
       uses: actions/upload-artifact@v3
       with:
         name: tfplan
         path: tfplan  
      # On push to "main", build or change infrastructure according to Terraform configuration files
+    - name: Download Plan
+      id: download-plan
+      uses: dawidd6/action-download-artifact@v2
+      with:
+      # github_token: ${{ inputs.github_token }}
+      # workflow: plan.yml
+      # pr: ${{ inputs.pr_id }}
+       name: tfplan
+       path: tfplan
 
- 
     - name: Terraform Apply
-      id: apply
-      # working-directory: ${{ inputs.terraform_directory }}
-      shell: bash
+      if: github.ref == 'refs/heads/main'
       run: |
-        echo 'apply<<EOF' >> $GITHUB_OUTPUT
-        terraform apply -input=false -no-color tfplan >> $GITHUB_OUTPUT
-        echo 'EOF' >> $GITHUB_OUTPUT
+       terraform apply -auto-approve -input=false \
+
+    
