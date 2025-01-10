@@ -124,15 +124,6 @@ jobs:
         name: tfplan
         path: tfplan  
      # On push to "main", build or change infrastructure according to Terraform configuration files
-    - name: Download Plan
-      id: download-plan
-      uses: dawidd6/action-download-artifact@v2
-      with:
-      # github_token: ${{ inputs.github_token }}
-      # workflow: plan.yml
-      # pr: ${{ inputs.pr_id }}
-       name: tfplan
-       path: tfplan
 
  
     - name: Terraform Apply
