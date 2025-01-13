@@ -19,4 +19,18 @@ jobs:
         steps:
         - name: Checkout
           uses: actions/checkout@v4
+           # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v2
+        - name: Cache plugin dir
+          uses: actions/cache@v4
+          with:
+            path: ~/.tflint.d/plugins
+            key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+        - name: Setup TFLint
+          uses: terraform-linters/setup-tflint@v4
+          with:
+            tflint_version: v0.52.0
+        - name: 'Show version'
+          run: tflint --version
        
