@@ -15,7 +15,7 @@ jobs:
         defaults:
             run:
                 shell: bash
-                working-directory: ../../Terraform_AWS_Services/terraform-state-s3-locking-bucket
+                #working-directory: ../../Terraform_AWS_Services/terraform-state-s3-locking-bucket
         steps:
         - name: Checkout
           uses: actions/checkout@v4
