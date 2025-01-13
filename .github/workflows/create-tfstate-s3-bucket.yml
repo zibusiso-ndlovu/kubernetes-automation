@@ -49,7 +49,7 @@ jobs:
         - name: Terraform Init
           id: tf-ini
           run: terraform init
-          working-directory: ./Terraform_AWS_Services/terraform-state-s3-locking-bucket -f compact
+          working-directory: Terraform_AWS_Services/terraform-state-s3-locking-bucket -f compact
         # Checks that all Terraform configuration files adhere to a canonical format
         - name: Terraform Format
           id: tf-fmt
