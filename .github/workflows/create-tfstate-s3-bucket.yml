@@ -48,7 +48,7 @@ jobs:
               # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
             GITHUB_TOKEN: ${{ github.token }}
         - name: Run TFLint on specific directory
-          run: tflint --chdir=./Terraform_AWS_Services/terraform-state-s3-locking-bucket -f compact
+          run: tflint --chdir=Terraform_AWS_Services/terraform-state-s3-locking-bucket -f compact
 
         - name: Terraform Init
           id: tf-ini
