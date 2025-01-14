@@ -1,3 +1,4 @@
+name: 'Create TFSTATE S3 Bucket'
 on:
     workflow_dispatch:
         inputs:
