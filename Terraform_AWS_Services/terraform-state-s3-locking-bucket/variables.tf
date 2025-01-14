@@ -1,7 +1,7 @@
 variable "s3_bucket_name" {
   description = "S3 Bucket name"
   type        = string
-  default     = "K8s-Automated-cluster-deployment-01-2025"
+  default     = "k8s-automated-cluster-deployment-01-2025"
 }
 
 variable "aws_region" {
