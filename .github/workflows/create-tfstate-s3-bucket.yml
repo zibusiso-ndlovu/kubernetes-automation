@@ -67,17 +67,7 @@ jobs:
           run: terraform validate -no-color
           working-directory: ${{ inputs.target_directory }}
         # Generates an execution plan for Terraform
-        - name: Terraform Plan
-          id: tfplan
-          working-directory: ${{ inputs.target_directory }}
-          shell: bash
-          run: |
-            echo 'plan<<EOF' >> $GITHUB_OUTPUT
-            terraform plan -no-color -out=tfplan >> $GITHUB_OUTPUT
-            echo 'EOF' >> $GITHUB_OUTPUT
-        - name: Terraform Plan Status
-          if: steps.tfplan.outcome == 'failure'
-          run: exit 1
+       
          # Generates an execution plan for Terraform
       # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
         - name: Terraform Plan
